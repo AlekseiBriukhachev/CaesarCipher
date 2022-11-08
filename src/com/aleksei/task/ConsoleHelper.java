@@ -2,36 +2,40 @@ package com.aleksei.task;
 
 import com.aleksei.task.exception.InterruptOperationException;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static com.aleksei.task.View.textField;
+
 public class ConsoleHelper {
-    private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    private static View view = new View();
+    private static String consoleString;
+        private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//    private static BufferedReader bufferedReader = new BufferedReader(new StringReader(textField.getText() + "\n"));
+
     public static void writeMessage(String message) {
         System.out.println(message);
+//        View.console.append(message + "\n");
     }
 
     public static String readString() throws InterruptOperationException {
         try {
-            String text = bufferedReader.readLine();
-            if ("exit".equalsIgnoreCase(text)) {
-                throw new InterruptOperationException();
-            }
-            return text;
+                String text = bufferedReader.readLine();
+                if ("exit".equalsIgnoreCase(text)) {
+                    throw new InterruptOperationException();
+                }
+                return text;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static String readFile(String path){
+    public static String readFile(String path) {
         String file = "";
-        try(BufferedReader reader = Files.newBufferedReader(Paths.get(path))){
-            while (reader.ready()){
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+            while (reader.ready()) {
                 String string = reader.readLine();
                 file += string;
             }
@@ -40,10 +44,10 @@ public class ConsoleHelper {
         }
         return file;
     }
-    public static void writeFile (String file, String path){
-        try(BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))){
+
+    public static void writeFile(String file, String path) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {
             writer.write(file);
-//            writer.flush();
         } catch (IOException e) {
             ConsoleHelper.writeMessage("Not correct entered data");
         }
@@ -65,6 +69,15 @@ public class ConsoleHelper {
             }
         }
     }
+
+    public static String getConsoleString() {
+        return consoleString;
+    }
+
+    public static void setConsoleString(String consoleString) {
+        ConsoleHelper.consoleString = consoleString;
+    }
+
     public static void printExitMessage() {
         ConsoleHelper.writeMessage("Good buy. Thank you for choosing of our service");
     }

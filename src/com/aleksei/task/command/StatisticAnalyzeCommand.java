@@ -3,11 +3,7 @@ package com.aleksei.task.command;
 import com.aleksei.task.ConsoleHelper;
 import com.aleksei.task.exception.InterruptOperationException;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class StatisticAnalyzeCommand implements Command {
