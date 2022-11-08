@@ -3,6 +3,7 @@ package com.aleksei.task;
 import com.aleksei.task.command.*;
 import com.aleksei.task.exception.InterruptOperationException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class CommandExecutor {
         commandMap.put(Operation.EXIT, new ExitCommand());
     }
 
-    public static final void execute(Operation operation) throws InterruptOperationException {
+    public static final void execute(Operation operation) throws InterruptOperationException, IOException {
         commandMap.get(operation).execute();
     }
 }

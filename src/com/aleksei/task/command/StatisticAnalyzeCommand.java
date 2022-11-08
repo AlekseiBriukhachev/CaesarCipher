@@ -1,82 +1,86 @@
 package com.aleksei.task.command;
 
+import com.aleksei.task.ConsoleHelper;
 import com.aleksei.task.exception.InterruptOperationException;
 
-public class StatisticAnalyzeCommand implements Command {
-    @Override
-    public void execute() throws InterruptOperationException {
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
+public class StatisticAnalyzeCommand implements Command {
+
+    private final Map<Character, Integer> mapEncryptedFile = new HashMap<>();
+    private final Map<Character, Integer> mapStatisticFile = new HashMap<>();
+    private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
+
+    @Override
+    public void execute() throws InterruptOperationException, IOException {
+        ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
+        String pathEncryptedFile = ConsoleHelper.readString();
+
+        ConsoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
+        String pathStatisticFile = ConsoleHelper.readString();
+
+        ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
+        String pathNotEncryptedFile = ConsoleHelper.readString();
+
+        List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
+        List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));
+
+        if (listEncryptedFile.size() <= listStatisticFile.size()) {
+            for (int i = 0; i < listEncryptedFile.size(); i++) {
+                mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey());
+            }
+            try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
+                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+                StringBuilder stringBuilder = new StringBuilder();
+                while (reader.ready()) {
+                    String string = reader.readLine();
+                    for (char encryptedChar : string.toCharArray()) {
+                        Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
+                        stringBuilder.append(deEncryptedChar);
+                    }
+                    writer.write(stringBuilder + System.lineSeparator());
+                }
+            }
+            ConsoleHelper.writeMessage("File is decrypted by statistic analyze");
+        } else {
+            ConsoleHelper.writeMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
+        }
     }
-    //    private final Scanner scanner = new Scanner(System.in);
-//
-//    private final Map<Character, Integer> mapEncryptedFile = new HashMap<>();
-//    private final Map<Character, Integer> mapStatisticFile = new HashMap<>();
-//    private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
-//
-//    public void choiceFour() throws IOException {
-//
-//        System.out.println("Введите полный путь к файлу, для его расшифровки:");
-//        String pathEncryptedFile = scanner.nextLine();
-//
-//        System.out.println("Введите полный путь к файлу, для набора статистики:");
-//        String pathStatisticFile  = scanner.nextLine();
-//
-//        System.out.println("Введите полный путь к файлу, в который записать расшифрованый текст:");
-//        String pathNotEncryptedFile = scanner.nextLine();
-//
-//        List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
-//        List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));
-//
-//        if (listEncryptedFile.size() <= listStatisticFile.size() ) {
-//            for (int i = 0; i < listEncryptedFile.size(); i++) {
-//                mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey());
-//            }
-//            try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
-//                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
-//                StringBuilder stringBuilder = new StringBuilder();
-//                while (reader.ready()) {
-//                    String string = reader.readLine();
-//                    for (char encryptedChar : string.toCharArray()) {
-//                        Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
-//                        stringBuilder.append(deEncryptedChar);
-//                    }
-//                    writer.write(stringBuilder + System.lineSeparator());
-//                }
-//            }
-//            System.out.println("Содержимое файла расшифровано методом статистического анализа.");
-//        } else {
-//            System.out.println("Размер файла статистики недостаточен для расшифровки, необходим файл большей длины чем зашифрованный");
-//        }
-//    }
-//
-//    private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
-//
-//        StringBuilder stringBuilder = new StringBuilder();
-//        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-//            while (reader.ready()) {
-//                String string = reader.readLine();
-//                stringBuilder.append(string);
-//            }
-//            String bigString = stringBuilder.toString();
-//            for (int i = 0; i < bigString.length(); i++) {
-//                char charAt = bigString.charAt(i);
-//                if (!map.containsKey(charAt)) {
-//                    map.put(charAt, 1);
-//                } else {
-//                    map.put(charAt, map.get(charAt) + 1);
-//                }
-//            }
-//            return map;
-//        }
-//    }
-//
-//    private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {
-//        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
-//
-//        Comparator<Map.Entry<Character, Integer>> comparator = Map.Entry.comparingByValue();
-//
-//        list.sort(comparator.reversed());
-//
-//        return list;
-//    }
+
+    private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+            while (reader.ready()) {
+                String string = reader.readLine();
+                stringBuilder.append(string);
+            }
+            String bigString = stringBuilder.toString();
+            for (int i = 0; i < bigString.length(); i++) {
+                char charAt = bigString.charAt(i);
+                if (!map.containsKey(charAt)) {
+                    map.put(charAt, 1);
+                } else {
+                    map.put(charAt, map.get(charAt) + 1);
+                }
+            }
+            return map;
+        }
+    }
+
+    private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {
+        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
+
+        Comparator<Map.Entry<Character, Integer>> comparator = Map.Entry.comparingByValue();
+
+        list.sort(comparator.reversed());
+
+        return list;
+    }
+
 }

@@ -13,8 +13,9 @@ public class Controller {
             } while (operation != Operation.EXIT);
             ConsoleHelper.printExitMessage();
         } catch (Exception ignored) {
-            ConsoleHelper.writeMessage("Invalid entered data.");
-            ignored.printStackTrace();
+//            ConsoleHelper.writeMessage("Invalid entered data.");
+            ConsoleHelper.printExitMessage();
+//            ignored.printStackTrace();
         }
     }
 

@@ -31,8 +31,8 @@ public class ConsoleHelper {
             ConsoleHelper.writeMessage("\t 1 - Encrypt of text to file with key");
             ConsoleHelper.writeMessage("\t 2 - Decrypt of text to file with key");
             ConsoleHelper.writeMessage("\t 3 - Decoding of text with using of Brute Force");
-//            ConsoleHelper.writeMessage("\t 4 - Decoding of text with using of statistic analyze");
-//            ConsoleHelper.writeMessage("\t 5 - Exit");
+            ConsoleHelper.writeMessage("\t 4 - Decoding of text with using of statistic analyze");
+            ConsoleHelper.writeMessage("\t 5 - Exit");
             Integer i = Integer.parseInt(ConsoleHelper.readString().trim());
             try {
                 return Operation.getAllowableOperationByOrdinal(i);
