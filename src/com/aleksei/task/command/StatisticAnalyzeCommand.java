@@ -34,18 +34,16 @@ public class StatisticAnalyzeCommand implements Command {
             for (int i = 0; i < listEncryptedFile.size(); i++) {
                 mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey());
             }
-            try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
-                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
-                StringBuilder stringBuilder = new StringBuilder();
-                while (reader.ready()) {
-                    String string = reader.readLine();
-                    for (char encryptedChar : string.toCharArray()) {
-                        Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
-                        stringBuilder.append(deEncryptedChar);
-                    }
-                    writer.write(stringBuilder + System.lineSeparator());
-                }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String fileString = ConsoleHelper.readFile(pathEncryptedFile);
+            for (char encryptedChar : fileString.toCharArray()) {
+                Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
+                stringBuilder.append(deEncryptedChar);
             }
+            ConsoleHelper.writeFile(stringBuilder + System.lineSeparator(), pathNotEncryptedFile);
+
+
             ConsoleHelper.writeMessage("File is decrypted by statistic analyze");
         } else {
             ConsoleHelper.writeMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
@@ -55,22 +53,18 @@ public class StatisticAnalyzeCommand implements Command {
     private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-            while (reader.ready()) {
-                String string = reader.readLine();
-                stringBuilder.append(string);
+        String stringToFilling = ConsoleHelper.readFile(path);
+        stringBuilder.append(stringToFilling);
+        String file = stringBuilder.toString();
+        for (int i = 0; i < file.length(); i++) {
+            char charAt = file.charAt(i);
+            if (!map.containsKey(charAt)) {
+                map.put(charAt, 1);
+            } else {
+                map.put(charAt, map.get(charAt) + 1);
             }
-            String bigString = stringBuilder.toString();
-            for (int i = 0; i < bigString.length(); i++) {
-                char charAt = bigString.charAt(i);
-                if (!map.containsKey(charAt)) {
-                    map.put(charAt, 1);
-                } else {
-                    map.put(charAt, map.get(charAt) + 1);
-                }
-            }
-            return map;
         }
+        return map;
     }
 
     private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {
