@@ -29,7 +29,6 @@ public class View extends JFrame implements ActionListener {
     private JButton decryptBtn = new JButton("Decrypt");
     private JButton bruteForceBtn = new JButton("Brute Force");
     private JButton statisticBtn = new JButton("Statistic analyze");
-    private JButton enterBtn = new JButton("Enter");
 
     public View() {
         try {
@@ -65,20 +64,13 @@ public class View extends JFrame implements ActionListener {
         statisticBtn.setActionCommand("statisticAnalyze");
         statisticBtn.addActionListener(this);
 
-//        enterBtn.setActionCommand("enter");
-//        enterBtn.addActionListener(this);
-
         btnPanel.add(encryptBtn);
         btnPanel.add(decryptBtn);
         btnPanel.add(bruteForceBtn);
         btnPanel.add(statisticBtn);
 
-//        textAndBtnPanel.add(new JScrollPane(textField));
-//        textAndBtnPanel.add(enterBtn);
-
         console.setEditable(false);
 
-//        frame.getContentPane().add(textAndBtnPanel, BorderLayout.NORTH);
         frame.getContentPane().add(btnPanel, BorderLayout.SOUTH);
         frame.getContentPane().add(new JScrollPane(console), BorderLayout.CENTER);
         frame.pack();

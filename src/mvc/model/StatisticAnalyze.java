@@ -1,28 +1,30 @@
 package mvc.model;
 
-import com.aleksei.caesarcipher.ConsoleHelper;
-import com.aleksei.caesarcipher.command.Command;
-import com.aleksei.caesarcipher.exception.InterruptOperationException;
+
+import mvc.Controller;
 
 import java.io.IOException;
 import java.util.*;
 
-public class StatisticAnalyze implements Command {
+public class StatisticAnalyze {
 
     private final Map<Character, Integer> mapEncryptedFile = new HashMap<>();
     private final Map<Character, Integer> mapStatisticFile = new HashMap<>();
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
-    @Override
-    public void execute() throws InterruptOperationException, IOException {
-        ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
-        String pathEncryptedFile = ConsoleHelper.readString();
+    public void analyze() throws IOException {
+        Controller controller = new Controller();
+        ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
+        String pathEncryptedFile = ReaderWriter.readDialogMessage();
+        if (pathEncryptedFile == null) controller.exit();
 
-        ConsoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
-        String pathStatisticFile = ConsoleHelper.readString();
+        ReaderWriter.setDialogText("Please enter the path to open file the same author and the same style:");
+        String pathStatisticFile = ReaderWriter.readDialogMessage();
+        if (pathStatisticFile == null) controller.exit();
 
-        ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
-        String pathNotEncryptedFile = ConsoleHelper.readString();
+        ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
+        String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
+        if (pathNotEncryptedFile == null) controller.exit();
 
         List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
         List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));
@@ -33,24 +35,24 @@ public class StatisticAnalyze implements Command {
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-            String fileString = ConsoleHelper.readFile(pathEncryptedFile);
+            String fileString = ReaderWriter.readFile(pathEncryptedFile);
             for (char encryptedChar : fileString.toCharArray()) {
                 Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
                 stringBuilder.append(deEncryptedChar);
             }
-            ConsoleHelper.writeFile(stringBuilder + System.lineSeparator(), pathNotEncryptedFile);
+            ReaderWriter.writeFile(stringBuilder + System.lineSeparator(), pathNotEncryptedFile);
 
 
-            ConsoleHelper.writeMessage("File is decrypted by statistic analyze");
+            ReaderWriter.printMessage("File is decrypted by statistic analyze");
         } else {
-            ConsoleHelper.writeMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
+            ReaderWriter.printMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
         }
     }
 
     private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
-        String stringToFilling = ConsoleHelper.readFile(path);
+        String stringToFilling = ReaderWriter.readFile(path);
         stringBuilder.append(stringToFilling);
         String file = stringBuilder.toString();
         for (int i = 0; i < file.length(); i++) {
