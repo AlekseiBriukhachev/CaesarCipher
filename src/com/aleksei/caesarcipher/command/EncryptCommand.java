@@ -4,6 +4,11 @@ import com.aleksei.caesarcipher.CaesarCipher;
 import com.aleksei.caesarcipher.ConsoleHelper;
 import com.aleksei.caesarcipher.exception.InterruptOperationException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class EncryptCommand implements Command {
@@ -20,10 +25,18 @@ public class EncryptCommand implements Command {
         ConsoleHelper.writeMessage("Please enter the path for saving of encrypted file:");
         String pathOfEncryptedFile = ConsoleHelper.readString();
 
-        String textFromFile = ConsoleHelper.readFile(pathOfFile);
-        String encryptString = caesarCipher.encryptText(textFromFile, key);
-        ConsoleHelper.writeFile(encryptString + System.lineSeparator(), pathOfEncryptedFile);
+        try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))){
+            while (reader.ready()){
+                String line = reader.readLine();
+                String encryptString = caesarCipher.encryptText(line, key);
+                writer.write(encryptString + System.lineSeparator());
+            }
+            ConsoleHelper.writeMessage("Encrypting is done!");
+        } catch (IOException e) {
+            ConsoleHelper.writeMessage("Not correct entered data");
+        }
 
-        ConsoleHelper.writeMessage("Encrypting is done!");
+
     }
 }

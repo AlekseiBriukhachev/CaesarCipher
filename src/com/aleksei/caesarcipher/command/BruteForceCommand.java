@@ -4,6 +4,14 @@ import com.aleksei.caesarcipher.CaesarCipher;
 import com.aleksei.caesarcipher.ConsoleHelper;
 import com.aleksei.caesarcipher.exception.InterruptOperationException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BruteForceCommand implements Command {
     private final CaesarCipher caesarCipher = new CaesarCipher();
 
@@ -18,11 +26,26 @@ public class BruteForceCommand implements Command {
             ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
             String pathNotEncryptedFile = ConsoleHelper.readString();
 
-            String fileText = ConsoleHelper.readFile(pathEncryptedFile);
-            int key = getDecryptingKey(fileText);
-            String decryptString = caesarCipher.decryptText(fileText, key);
-            ConsoleHelper.writeFile(decryptString + System.lineSeparator(), pathNotEncryptedFile);
-            ConsoleHelper.writeMessage("File is decrypted by brute forcing. Key is " + key);
+            try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
+                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+                StringBuilder stringBuilder = new StringBuilder();
+                List<String> listStrings = new ArrayList<>();
+                int key = 0;
+                while (reader.ready()) {
+                    String string = reader.readLine();
+                    stringBuilder.append(string);
+                    listStrings.add(string);
+                }
+
+                    key = getDecryptingKey(listStrings.get(0));
+                for (String line : listStrings){
+                    String decryptString = caesarCipher.decryptText(line, key);
+                    writer.write(decryptString + System.lineSeparator());
+                }
+                ConsoleHelper.writeMessage("File is decrypted by brute forcing. Key is " + key);
+            } catch (IOException e) {
+                ConsoleHelper.writeMessage("Not correct entered data");
+            }
         }
     }
 

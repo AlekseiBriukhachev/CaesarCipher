@@ -3,18 +3,13 @@ package com.aleksei.caesarcipher;
 import com.aleksei.caesarcipher.exception.InterruptOperationException;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class ConsoleHelper {
-    private static View view = new View();
     private static String consoleString;
         private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-//    private static BufferedReader bufferedReader = new BufferedReader(new StringReader(textField.getText() + "\n"));
 
     public static void writeMessage(String message) {
         System.out.println(message);
-//        View.console.append(message + "\n");
     }
 
     public static String readString() throws InterruptOperationException {
@@ -28,27 +23,6 @@ public class ConsoleHelper {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static String readFile(String path) {
-        String file = "";
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-            while (reader.ready()) {
-                String string = reader.readLine();
-                file += string;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return file;
-    }
-
-    public static void writeFile(String file, String path) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {
-            writer.write(file);
-        } catch (IOException e) {
-            ConsoleHelper.writeMessage("Not correct entered data");
-        }
     }
 
     public static Operation askOperation() throws InterruptOperationException {

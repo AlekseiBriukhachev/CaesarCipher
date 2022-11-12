@@ -3,7 +3,11 @@ package com.aleksei.caesarcipher.command;
 import com.aleksei.caesarcipher.ConsoleHelper;
 import com.aleksei.caesarcipher.exception.InterruptOperationException;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class StatisticAnalyzeCommand implements Command {
@@ -32,12 +36,20 @@ public class StatisticAnalyzeCommand implements Command {
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-            String fileString = ConsoleHelper.readFile(pathEncryptedFile);
-            for (char encryptedChar : fileString.toCharArray()) {
-                Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
-                stringBuilder.append(deEncryptedChar);
+
+            try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+                while (reader.ready()) {
+                    String line = reader.readLine();
+                    for (char encryptedChar : line.toCharArray()) {
+                        Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
+                        stringBuilder.append(deEncryptedChar);
+                    }
+                    writer.write(stringBuilder + System.lineSeparator());
+                }
+            }catch (IOException e){
+                ConsoleHelper.writeMessage("Not correct entered data");
             }
-            ConsoleHelper.writeFile(stringBuilder + System.lineSeparator(), pathNotEncryptedFile);
 
 
             ConsoleHelper.writeMessage("File is decrypted by statistic analyze");
@@ -49,18 +61,22 @@ public class StatisticAnalyzeCommand implements Command {
     private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
-        String stringToFilling = ConsoleHelper.readFile(path);
-        stringBuilder.append(stringToFilling);
-        String file = stringBuilder.toString();
-        for (int i = 0; i < file.length(); i++) {
-            char charAt = file.charAt(i);
-            if (!map.containsKey(charAt)) {
-                map.put(charAt, 1);
-            } else {
-                map.put(charAt, map.get(charAt) + 1);
+                try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+            while (reader.ready()) {
+                String string = reader.readLine();
+                stringBuilder.append(string);
             }
+            String bigString = stringBuilder.toString();
+            for (int i = 0; i < bigString.length(); i++) {
+                char charAt = bigString.charAt(i);
+                if (!map.containsKey(charAt)) {
+                    map.put(charAt, 1);
+                } else {
+                    map.put(charAt, map.get(charAt) + 1);
+                }
+            }
+            return map;
         }
-        return map;
     }
 
     private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {
