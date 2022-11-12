@@ -20,7 +20,6 @@ public class View extends JFrame implements ActionListener {
     private StatisticAnalyze statisticAnalyze = new StatisticAnalyze();
     private static String dialogMessage;
     private static String confirmationMessage;
-    private static String warningMessage;
     private JFrame frame = new JFrame("Caesar Cipher");
     private JPanel btnPanel = new JPanel();
     private JPanel textAndBtnPanel = new JPanel();
@@ -112,17 +111,11 @@ public class View extends JFrame implements ActionListener {
     public static void setDialogMessage(String dialogMessage) {
         View.dialogMessage = dialogMessage;
     }
-//    public static String getConfirmationMessage(){
-//        return JOptionPane.showConfirmDialog(confirmationMessage);
-//    }
+    public static int getConfirmationMessage(){
+        return JOptionPane.showConfirmDialog(null, confirmationMessage);
+    }
     public  static void setConfirmationMessage(String confirmationMessage){
         View.confirmationMessage = confirmationMessage;
     }
-    public static void setWarningMessage(String warningMessage){
-        View.warningMessage = warningMessage;
-    }
-//    public static String getWarningMessage(){
-//        return JOptionPane.warn
-//    }
 }
 

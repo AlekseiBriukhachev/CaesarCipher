@@ -7,8 +7,8 @@ public class BruteForce {
     private final CaesarCipher caesarCipher = new CaesarCipher();
 
     public void bruteForce() {
-        ReaderWriter.setDialogText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue? Y/N");
-        if (ReaderWriter.readDialogMessage().equalsIgnoreCase("y")) {
+        ReaderWriter.setDialogText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue?");
+        if (ReaderWriter.readConfirmationMessage() == 0) {
 
             ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
             String pathEncryptedFile = ReaderWriter.readDialogMessage();
@@ -60,11 +60,11 @@ public class BruteForce {
 
 
     private boolean isValidText(String text) {
-        ReaderWriter.setConfirmText(text + "\n" + "Can you read the text? Y/N");
+        ReaderWriter.setConfirmText(text + "\n" + "Can you read the text?");
 
-        String answer = ReaderWriter.readDialogMessage();
+        int answer = ReaderWriter.readConfirmationMessage();
 
-        if (answer.equalsIgnoreCase("Y")) {
+        if (answer == 0) {
             return true;
         }
         return false;

@@ -17,6 +17,7 @@ public class ReaderWriter {
     public static void setDialogText(String text){
         View.setDialogMessage(text);
     }
+    public static int readConfirmationMessage(){return View.getConfirmationMessage();}
     public static void setConfirmText(String text){
         View.setConfirmationMessage(text);
     }
