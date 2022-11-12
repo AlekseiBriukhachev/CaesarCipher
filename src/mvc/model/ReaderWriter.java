@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ReaderWriter {
-    private View view = new View();
     public static String readDialogMessage(){
         return View.getDialogMessage();
     }
@@ -25,16 +24,16 @@ public class ReaderWriter {
         View.console.setText(message + "\n");
     }
     public static String readFile(String path) {
-        String file = "";
+        StringBuilder file = new StringBuilder();
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
             while (reader.ready()) {
                 String string = reader.readLine();
-                file += string;
+                file.append(string);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return file;
+        return file.toString();
     }
 
     public static void writeFile(String file, String path) {

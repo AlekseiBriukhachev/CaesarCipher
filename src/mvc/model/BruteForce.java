@@ -12,21 +12,18 @@ public class BruteForce {
         Controller controller = new Controller();
         ReaderWriter.setConfirmText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue?");
         switch (ReaderWriter.readConfirmationMessage()) {
-            case 0:
+            case 0 -> {
                 ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
                 String pathEncryptedFile = ReaderWriter.readDialogMessage();
-
                 ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
                 String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
-
                 String fileText = ReaderWriter.readFile(pathEncryptedFile);
                 int key = getDecryptingKey(fileText);
                 String decryptString = caesarCipher.decryptText(fileText, key);
                 ReaderWriter.writeFile(decryptString + System.lineSeparator(), pathNotEncryptedFile);
                 ReaderWriter.printMessage("File is decrypted by brute forcing. Key is " + key);
-                break;
-            case 2:
-                controller.exit();
+            }
+            case 2 -> controller.exit();
         }
     }
 

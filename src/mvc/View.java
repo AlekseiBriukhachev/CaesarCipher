@@ -11,24 +11,22 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class View extends JFrame implements ActionListener {
-    private Controller controller;
-    private Encrypter encrypter = new Encrypter();
-    private Decrypt decrypt = new Decrypt();
-    private BruteForce bruteForce = new BruteForce();
-    private StatisticAnalyze statisticAnalyze = new StatisticAnalyze();
+    private final Encrypter encrypter = new Encrypter();
+    private final Decrypt decrypt = new Decrypt();
+    private final BruteForce bruteForce = new BruteForce();
+    private final StatisticAnalyze statisticAnalyze = new StatisticAnalyze();
     private static String dialogMessage;
     private static String confirmationMessage;
-    private JFrame frame = new JFrame("Caesar Cipher");
-    private JPanel btnPanel = new JPanel();
-    private JPanel textAndBtnPanel = new JPanel();
-    private JTextField textField = new JTextField(40);
+    private final JFrame frame = new JFrame("Caesar Cipher");
+    private final JPanel btnPanel = new JPanel();
     public static JTextArea console = new JTextArea(10, 20);
-    private JButton encryptBtn = new JButton("Encrypt");
-    private JButton decryptBtn = new JButton("Decrypt");
-    private JButton bruteForceBtn = new JButton("Brute Force");
-    private JButton statisticBtn = new JButton("Statistic analyze");
+    private final JButton encryptBtn = new JButton("Encrypt");
+    private final JButton decryptBtn = new JButton("Decrypt");
+    private final JButton bruteForceBtn = new JButton("Brute Force");
+    private final JButton statisticBtn = new JButton("Statistic analyze");
 
     public View() {
         try {
@@ -45,10 +43,6 @@ public class View extends JFrame implements ActionListener {
                 System.exit(0);
             }
         });
-    }
-
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public void initGui() {
@@ -81,32 +75,36 @@ public class View extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "encrypt":
-                encrypter.encrypt();
-                break;
-            case "decrypt":
-                decrypt.decrypt();
-                break;
-            case "bruteforce":
-                bruteForce.bruteForce();
-                break;
+            case "encrypt" -> encrypter.encrypt();
+            case "decrypt" -> decrypt.decrypt();
+            case "bruteforce" -> bruteForce.bruteForce();
+            case "statisticAnalyze" -> {
+                try {
+                    statisticAnalyze.analyze();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
     }
 
     public void exit() {
         System.exit(0);
     }
-    public static String getDialogMessage(){
+
+    public static String getDialogMessage() {
         return JOptionPane.showInputDialog(dialogMessage);
     }
 
     public static void setDialogMessage(String dialogMessage) {
         View.dialogMessage = dialogMessage;
     }
-    public static int getConfirmationMessage(){
+
+    public static int getConfirmationMessage() {
         return JOptionPane.showConfirmDialog(null, confirmationMessage);
     }
-    public  static void setConfirmationMessage(String confirmationMessage){
+
+    public static void setConfirmationMessage(String confirmationMessage) {
         View.confirmationMessage = confirmationMessage;
     }
 }
