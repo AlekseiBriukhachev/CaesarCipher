@@ -3,6 +3,7 @@ package mvc.model;
 
 import mvc.CaesarCipher;
 import mvc.Controller;
+import mvc.ReaderWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

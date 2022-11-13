@@ -23,7 +23,7 @@ public class View extends JFrame implements ActionListener {
     private static String doneConfirmation;
     private final JFrame frame = new JFrame("Caesar Cipher");
     private final JPanel btnPanel = new JPanel();
-    public static JTextArea console = new JTextArea(10, 20);
+    protected static JTextArea console = new JTextArea(10, 20);
     private final JButton encryptBtn = new JButton("Encrypt");
     private final JButton decryptBtn = new JButton("Decrypt");
     private final JButton bruteForceBtn = new JButton("Brute Force");

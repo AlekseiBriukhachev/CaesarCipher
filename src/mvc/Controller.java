@@ -1,7 +1,5 @@
 package mvc;
 
-import mvc.model.ReaderWriter;
-
 public class Controller {
     private View view = new View();
     public void exit(){
