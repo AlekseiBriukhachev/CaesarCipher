@@ -51,12 +51,12 @@ public class StatisticAnalyze {
                     writer.write(stringBuilder + System.lineSeparator());
                 }
             }catch (IOException e){
-                ReaderWriter.setConfirmText("Not correct entered data");
+                ReaderWriter.setDoneMessage("Not correct entered data");
             }
 
-            ReaderWriter.printMessage("File is decrypted by statistic analyze");
+            ReaderWriter.setDoneMessage("File is decrypted by statistic analyze");
         } else {
-            ReaderWriter.printMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
+            ReaderWriter.setDoneMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
         }
     }
 

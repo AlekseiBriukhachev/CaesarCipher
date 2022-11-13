@@ -37,7 +37,7 @@ public class Decrypt {
                 String decryptedString = caesarCipher.decryptText(line, key);
                 writer.write(decryptedString + System.lineSeparator());
             }
-            ReaderWriter.printMessage("Decrypting is done!");
+            ReaderWriter.setDoneMessage("Decrypting is done!");
         } catch (IOException e) {
             ReaderWriter.setConfirmText("Not correct entered data");
         }

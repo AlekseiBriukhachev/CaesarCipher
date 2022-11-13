@@ -20,6 +20,7 @@ public class View extends JFrame implements ActionListener {
     private final StatisticAnalyze statisticAnalyze = new StatisticAnalyze();
     private static String dialogMessage;
     private static String confirmationMessage;
+    private static String doneConfirmation;
     private final JFrame frame = new JFrame("Caesar Cipher");
     private final JPanel btnPanel = new JPanel();
     public static JTextArea console = new JTextArea(10, 20);
@@ -106,6 +107,14 @@ public class View extends JFrame implements ActionListener {
 
     public static void setConfirmationMessage(String confirmationMessage) {
         View.confirmationMessage = confirmationMessage;
+    }
+
+    public static void getDoneConfirmation() {
+        JOptionPane.showMessageDialog(null, doneConfirmation);
+    }
+
+    public static void setDoneConfirmation(String doneConfirmation) {
+        View.doneConfirmation = doneConfirmation;
     }
 }
 

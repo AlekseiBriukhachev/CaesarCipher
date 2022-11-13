@@ -1,7 +1,6 @@
 package mvc.model;
 
 
-import com.aleksei.caesarcipher.ConsoleHelper;
 import mvc.CaesarCipher;
 import mvc.Controller;
 
@@ -42,9 +41,9 @@ public class BruteForce {
                         String decryptString = caesarCipher.decryptText(line, key);
                         writer.write(decryptString + System.lineSeparator());
                     }
-                    ReaderWriter.setConfirmText("File is decrypted by brute forcing. Key is " + key);
+                    ReaderWriter.setDoneMessage("File is decrypted by brute forcing. Key is " + key);
                 }catch (IOException e) {
-                    ConsoleHelper.writeMessage("Not correct entered data");
+                    ReaderWriter.setDoneMessage("Not correct entered data");
                 }
             }
             case 2 -> controller.exit();

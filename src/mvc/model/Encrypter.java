@@ -29,16 +29,16 @@ public class Encrypter {
         String pathOfEncryptedFile = ReaderWriter.readDialogMessage();
         if (pathOfEncryptedFile == null) controller.exit();
 
-        try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))){
-            while (reader.ready()){
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
+             BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))) {
+            while (reader.ready()) {
                 String line = reader.readLine();
                 String encryptString = caesarCipher.encryptText(line, key);
                 writer.write(encryptString + System.lineSeparator());
             }
-        ReaderWriter.setConfirmText("Encrypting is done!");
+            ReaderWriter.setDoneMessage("Encrypting is done!");
         } catch (IOException e) {
-            ReaderWriter.setConfirmText("Not correct entered data");
+            ReaderWriter.setDoneMessage("Not correct entered data");
         }
 
     }
