@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -18,10 +19,18 @@ public class Decrypt {
     public void decrypt() {
         CaesarCipher caesarCipher = new CaesarCipher();
         Controller controller = new Controller();
+        boolean isPath = false;
 
         ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
         String  pathEncryptedFile = ReaderWriter.readDialogMessage();
-        if (pathEncryptedFile == null) controller.exit();
+        do {
+            if (Path.of(pathEncryptedFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
+        isPath = false;
 
         ReaderWriter.setDialogText("Enter the key:");
         int key = Integer.parseInt(Objects.requireNonNull(ReaderWriter.readDialogMessage()));
@@ -29,7 +38,13 @@ public class Decrypt {
 
         ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
         String pathOfFile = ReaderWriter.readDialogMessage();
-        if (pathOfFile == null) controller.exit();
+        do {
+            if (Path.of(pathOfFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
 
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfFile))){

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -16,15 +17,31 @@ public class DecryptCommand implements Command {
     @Override
     public void execute() throws InterruptOperationException {
         CaesarCipher caesarCipher = new CaesarCipher();
+        boolean isPath = false;
 
         ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
         String  pathEncryptedFile = ConsoleHelper.readString();
+        do {
+            if (Path.of(pathEncryptedFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
+        isPath = false;
 
         ConsoleHelper.writeMessage("Enter the key:");
         int key = Integer.parseInt(Objects.requireNonNull(ConsoleHelper.readString()));
 
         ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
         String pathOfFile = ConsoleHelper.readString();
+        do {
+            if (Path.of(pathOfFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
 
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfFile))){

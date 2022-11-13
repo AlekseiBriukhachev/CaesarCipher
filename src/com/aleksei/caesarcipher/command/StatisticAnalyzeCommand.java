@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -18,14 +19,38 @@ public class StatisticAnalyzeCommand implements Command {
 
     @Override
     public void execute() throws InterruptOperationException, IOException {
+        boolean isPath = false;
         ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
         String pathEncryptedFile = ConsoleHelper.readString();
+        do {
+            if (Path.of(pathEncryptedFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
+        isPath = false;
 
         ConsoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
         String pathStatisticFile = ConsoleHelper.readString();
+        do {
+            if (Path.of(pathStatisticFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
+        isPath = false;
 
         ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
         String pathNotEncryptedFile = ConsoleHelper.readString();
+        do {
+            if (Path.of(pathNotEncryptedFile).isAbsolute()){
+                isPath = true;
+            }else {
+                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+            }
+        } while (!isPath);
 
         List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
         List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));
