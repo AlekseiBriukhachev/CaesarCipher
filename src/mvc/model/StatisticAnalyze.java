@@ -3,7 +3,11 @@ package mvc.model;
 
 import mvc.Controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class StatisticAnalyze {
@@ -35,13 +39,20 @@ public class StatisticAnalyze {
             }
 
             StringBuilder stringBuilder = new StringBuilder();
-            String fileString = ReaderWriter.readFile(pathEncryptedFile);
-            for (char encryptedChar : fileString.toCharArray()) {
-                Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
-                stringBuilder.append(deEncryptedChar);
-            }
-            ReaderWriter.writeFile(stringBuilder + System.lineSeparator(), pathNotEncryptedFile);
 
+            try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+                while (reader.ready()) {
+                    String line = reader.readLine();
+                    for (char encryptedChar : line.toCharArray()) {
+                        Character deEncryptedChar = mapDeEncrypted.get(encryptedChar);
+                        stringBuilder.append(deEncryptedChar);
+                    }
+                    writer.write(stringBuilder + System.lineSeparator());
+                }
+            }catch (IOException e){
+                ReaderWriter.setConfirmText("Not correct entered data");
+            }
 
             ReaderWriter.printMessage("File is decrypted by statistic analyze");
         } else {
@@ -52,18 +63,22 @@ public class StatisticAnalyze {
     private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
-        String stringToFilling = ReaderWriter.readFile(path);
-        stringBuilder.append(stringToFilling);
-        String file = stringBuilder.toString();
-        for (int i = 0; i < file.length(); i++) {
-            char charAt = file.charAt(i);
-            if (!map.containsKey(charAt)) {
-                map.put(charAt, 1);
-            } else {
-                map.put(charAt, map.get(charAt) + 1);
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+            while (reader.ready()) {
+                String string = reader.readLine();
+                stringBuilder.append(string);
             }
+            String file = stringBuilder.toString();
+            for (int i = 0; i < file.length(); i++) {
+                char charAt = file.charAt(i);
+                if (!map.containsKey(charAt)) {
+                    map.put(charAt, 1);
+                } else {
+                    map.put(charAt, map.get(charAt) + 1);
+                }
+            }
+            return map;
         }
-        return map;
     }
 
     private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {

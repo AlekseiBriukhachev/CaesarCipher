@@ -61,7 +61,7 @@ public class StatisticAnalyzeCommand implements Command {
     private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
 
         StringBuilder stringBuilder = new StringBuilder();
-                try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
             while (reader.ready()) {
                 String string = reader.readLine();
                 stringBuilder.append(string);

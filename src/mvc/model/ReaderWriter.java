@@ -23,24 +23,24 @@ public class ReaderWriter {
     public static void printMessage(String message){
         View.console.setText(message + "\n");
     }
-    public static String readFile(String path) {
-        StringBuilder file = new StringBuilder();
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-            while (reader.ready()) {
-                String string = reader.readLine();
-                file.append(string);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return file.toString();
-    }
-
-    public static void writeFile(String file, String path) {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {
-            writer.write(file);
-        } catch (IOException e) {
-            ReaderWriter.printMessage("Not correct entered data");
-        }
-    }
+//    public static String readFile(String path) {
+//        StringBuilder file = new StringBuilder();
+//        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
+//            while (reader.ready()) {
+//                String string = reader.readLine();
+//                file.append(string);
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return file.toString();
+//    }
+//
+//    public static void writeFile(String file, String path) {
+//        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {
+//            writer.write(file);
+//        } catch (IOException e) {
+//            ReaderWriter.printMessage("Not correct entered data");
+//        }
+//    }
 }

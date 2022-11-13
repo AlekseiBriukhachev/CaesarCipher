@@ -1,12 +1,20 @@
 package mvc.model;
 
 
+import com.aleksei.caesarcipher.ConsoleHelper;
 import mvc.CaesarCipher;
 import mvc.Controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BruteForce {
     private final CaesarCipher caesarCipher = new CaesarCipher();
-//    private final Controller controller = new Controller();
 
     public void bruteForce() {
         Controller controller = new Controller();
@@ -17,11 +25,27 @@ public class BruteForce {
                 String pathEncryptedFile = ReaderWriter.readDialogMessage();
                 ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
                 String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
-                String fileText = ReaderWriter.readFile(pathEncryptedFile);
-                int key = getDecryptingKey(fileText);
-                String decryptString = caesarCipher.decryptText(fileText, key);
-                ReaderWriter.writeFile(decryptString + System.lineSeparator(), pathNotEncryptedFile);
-                ReaderWriter.printMessage("File is decrypted by brute forcing. Key is " + key);
+
+                try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
+                     BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    List<String> listStrings = new ArrayList<>();
+                    int key = 0;
+                    while (reader.ready()) {
+                        String string = reader.readLine();
+                        stringBuilder.append(string);
+                        listStrings.add(string);
+                    }
+
+                    key = getDecryptingKey(listStrings.get(0));
+                    for (String line : listStrings){
+                        String decryptString = caesarCipher.decryptText(line, key);
+                        writer.write(decryptString + System.lineSeparator());
+                    }
+                    ReaderWriter.setConfirmText("File is decrypted by brute forcing. Key is " + key);
+                }catch (IOException e) {
+                    ConsoleHelper.writeMessage("Not correct entered data");
+                }
             }
             case 2 -> controller.exit();
         }

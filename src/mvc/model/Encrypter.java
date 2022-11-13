@@ -4,6 +4,11 @@ package mvc.model;
 import mvc.CaesarCipher;
 import mvc.Controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class Encrypter {
@@ -24,12 +29,17 @@ public class Encrypter {
         String pathOfEncryptedFile = ReaderWriter.readDialogMessage();
         if (pathOfEncryptedFile == null) controller.exit();
 
-        String textFromFile = ReaderWriter.readFile(pathOfFile);
-        String encryptString = caesarCipher.encryptText(textFromFile, key);
-        ReaderWriter.printMessage(encryptString + System.lineSeparator());
-        ReaderWriter.writeFile(encryptString + System.lineSeparator(), pathOfEncryptedFile);
-
-        ReaderWriter.printMessage("Encrypting is done!");
+        try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))){
+            while (reader.ready()){
+                String line = reader.readLine();
+                String encryptString = caesarCipher.encryptText(line, key);
+                writer.write(encryptString + System.lineSeparator());
+            }
+        ReaderWriter.setConfirmText("Encrypting is done!");
+        } catch (IOException e) {
+            ReaderWriter.setConfirmText("Not correct entered data");
+        }
 
     }
 }
