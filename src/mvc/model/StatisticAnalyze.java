@@ -19,40 +19,17 @@ public class StatisticAnalyze {
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
     public void analyze() throws IOException {
-        Controller controller = new Controller();
-        boolean isPath = false;
 
         ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
         String pathEncryptedFile = ReaderWriter.readDialogMessage();
-        do {
-            if (Path.of(pathEncryptedFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
-        isPath = false;
 
         ReaderWriter.setDialogText("Please enter the path to open file the same author and the same style:");
         String pathStatisticFile = ReaderWriter.readDialogMessage();
-        do {
-            if (Path.of(pathStatisticFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
-        isPath = false;
+
 
         ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
         String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
-        do {
-            if (Path.of(pathNotEncryptedFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
+
 
         List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
         List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));

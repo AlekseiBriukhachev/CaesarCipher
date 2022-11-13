@@ -18,31 +18,16 @@ public class Encrypter {
     public void encrypt() {
         CaesarCipher caesarCipher = new CaesarCipher();
         Controller controller = new Controller();
-        boolean isPath = false;
 
         ReaderWriter.setDialogText("Please enter the path to file for encrypting:");
         String pathOfFile = ReaderWriter.readDialogMessage();
-        do {
-            if (Path.of(pathOfFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
-        isPath = false;
+
 
         ReaderWriter.setDialogText("Please enter the key:");
         int key = Integer.parseInt(Objects.requireNonNull(ReaderWriter.readDialogMessage()));
 
         ReaderWriter.setDialogText("Please enter the path for saving of encrypted file:");
         String pathOfEncryptedFile = ReaderWriter.readDialogMessage();
-        do {
-            if (Path.of(pathOfEncryptedFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
              BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))) {

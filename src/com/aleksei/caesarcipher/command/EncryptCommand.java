@@ -39,6 +39,7 @@ public class EncryptCommand implements Command {
                 isPath = true;
             }else {
                 ConsoleHelper.writeMessage("Not correct entered data. Please try again");
+                pathOfEncryptedFile = ConsoleHelper.readString();
             }
         } while (!isPath);
 

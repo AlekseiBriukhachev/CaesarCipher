@@ -19,31 +19,17 @@ public class BruteForce {
 
     public void bruteForce() {
         Controller controller = new Controller();
-        boolean isPath = false;
 
         ReaderWriter.setConfirmText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue?");
         switch (ReaderWriter.readConfirmationMessage()) {
             case 0 -> {
                 ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
                 String pathEncryptedFile = ReaderWriter.readDialogMessage();
-                do {
-                    if (Path.of(pathEncryptedFile).isAbsolute()){
-                        isPath = true;
-                    }else {
-                        ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-                    }
-                } while (!isPath);
-                isPath = false;
+
 
                 ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
                 String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
-                do {
-                    if (Path.of(pathNotEncryptedFile).isAbsolute()){
-                        isPath = true;
-                    }else {
-                        ReaderWriter.setConfirmText("Not correct entered data. Please try again");
-                    }
-                } while (!isPath);
+
 
                 try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
                      BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
