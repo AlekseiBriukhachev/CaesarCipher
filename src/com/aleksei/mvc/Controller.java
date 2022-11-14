@@ -1,4 +1,4 @@
-package mvc;
+package com.aleksei.mvc;
 
 public class Controller {
     private View view = new View();

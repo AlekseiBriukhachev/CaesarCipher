@@ -1,6 +1,6 @@
-package com.aleksei.caesarcipher.command;
+package com.aleksei.command.commands;
 
-import com.aleksei.caesarcipher.exception.InterruptOperationException;
+import com.aleksei.command.exception.InterruptOperationException;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.aleksei.caesarcipher;
+package com.aleksei.command;
 
 
 public class Controller {

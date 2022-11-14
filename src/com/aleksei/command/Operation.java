@@ -1,4 +1,4 @@
-package com.aleksei.caesarcipher;
+package com.aleksei.command;
 
 public enum Operation {
     ENCRYPT,

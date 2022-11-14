@@ -1,7 +1,7 @@
-package com.aleksei.caesarcipher;
+package com.aleksei.command;
 
-import com.aleksei.caesarcipher.command.*;
-import com.aleksei.caesarcipher.exception.InterruptOperationException;
+import com.aleksei.command.commands.*;
+import com.aleksei.command.exception.InterruptOperationException;
 
 import java.io.IOException;
 import java.util.HashMap;

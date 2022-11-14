@@ -1,15 +1,14 @@
-package mvc.model;
+package com.aleksei.mvc.model;
 
 
-import mvc.CaesarCipher;
-import mvc.Controller;
-import mvc.ReaderWriter;
+import com.aleksei.mvc.CaesarCipher;
+import com.aleksei.mvc.Controller;
+import com.aleksei.mvc.ReaderWriter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.aleksei.caesarcipher;
+package com.aleksei.command;
 
 public class CaesarCipher {
     private static final String ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"

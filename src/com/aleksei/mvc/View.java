@@ -1,10 +1,10 @@
-package mvc;
+package com.aleksei.mvc;
 
 
-import mvc.model.BruteForce;
-import mvc.model.Decrypt;
-import mvc.model.Encrypter;
-import mvc.model.StatisticAnalyze;
+import com.aleksei.mvc.model.BruteForce;
+import com.aleksei.mvc.model.Decrypt;
+import com.aleksei.mvc.model.Encrypter;
+import com.aleksei.mvc.model.StatisticAnalyze;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;

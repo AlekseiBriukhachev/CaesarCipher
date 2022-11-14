@@ -1,4 +1,4 @@
-package mvc;
+package com.aleksei.mvc;
 
 public class CaesarCipher {
     private static final String ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"

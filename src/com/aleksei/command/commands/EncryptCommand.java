@@ -1,8 +1,8 @@
-package com.aleksei.caesarcipher.command;
+package com.aleksei.command.commands;
 
-import com.aleksei.caesarcipher.CaesarCipher;
-import com.aleksei.caesarcipher.ConsoleHelper;
-import com.aleksei.caesarcipher.exception.InterruptOperationException;
+import com.aleksei.command.CaesarCipher;
+import com.aleksei.command.ConsoleHelper;
+import com.aleksei.command.exception.InterruptOperationException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
