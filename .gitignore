@@ -1,4 +1,17 @@
-out
+#############
+## Idea
+#############
+target/
+.idea/
 .idea
-src
-README.md
+.repository/
+*.iml
+*.iws
+*.jrtc
+*.java
+*.class
+*.info
+*.properties
+*.jar
+/out.log
+/out.log.*
