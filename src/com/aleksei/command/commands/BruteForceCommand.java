@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class BruteForceCommand implements Command {
     private final CaesarCipher caesarCipher = new CaesarCipher();
@@ -39,8 +41,8 @@ public class BruteForceCommand implements Command {
                     listStrings.add(string);
                 }
 
-                    key = getDecryptingKey(listStrings.get(0));
-                for (String line : listStrings){
+                key = getDecryptingKey(listStrings.get(0));
+                for (String line : listStrings) {
                     String decryptString = caesarCipher.decryptText(line, key);
                     writer.write(decryptString + System.lineSeparator());
                 }
@@ -52,49 +54,25 @@ public class BruteForceCommand implements Command {
     }
 
 
-    public int getDecryptingKey(String message) throws InterruptOperationException {
-        int key = 0;
-        String decryptString = "";
-
-        for (int i = 0; i < caesarCipher.getAlphabet().length(); i++) {
-            for (int j = 0; j < message.length(); j++) {
-                int letterPosition = caesarCipher.getAlphabet().indexOf(message.charAt(j));
-                char decryptChar;
-                if (letterPosition >= 0) {
-                    if (message.toCharArray()[j] != ' ') {
-                        int decryptPos = (letterPosition - i) % caesarCipher.getAlphabet().length();
-                        if (decryptPos < 0) {
-                            decryptPos = caesarCipher.getAlphabet().length() + decryptPos;
-                        }
-                        decryptChar = caesarCipher.getAlphabet().charAt(decryptPos);
-                    } else {
-                        decryptChar = ' ';
-                    }
-                } else {
-                    decryptChar = message.charAt(j);
-                }
-                decryptString += decryptChar;
-            }
-            if (isValidText(decryptString)) {
-                key = i;
-                break;
-            } else {
-                decryptString = "";
-            }
-        }
-        return key;
+    public int getDecryptingKey(String message) {
+        return Math.toIntExact(IntStream.range(0, caesarCipher.getAlphabet().length())
+                .mapToObj(key -> caesarCipher.decryptText(message, key))
+                .filter(this::isValidText)
+                .count());
     }
 
 
-    private boolean isValidText(String text) throws InterruptOperationException {
+    private boolean isValidText(String text) {
         ConsoleHelper.writeMessage(text + "\n" + "Can you read the text? Y/N");
 
-        String answer = ConsoleHelper.readString();
-
-        if (answer.equalsIgnoreCase("Y")) {
-            return true;
+        String answer = null;
+        try {
+            answer = ConsoleHelper.readString();
+        } catch (InterruptOperationException e) {
+            e.printStackTrace();
         }
-        return false;
+
+        return Objects.requireNonNull(answer).equalsIgnoreCase("Y");
     }
 }
 

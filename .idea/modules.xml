@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CaesarCipher.iml" filepath="$PROJECT_DIR$/CaesarCipher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CaesarCipherMVC/CaesarCipherMVC.iml" filepath="$PROJECT_DIR$/CaesarCipherMVC/CaesarCipherMVC.iml" />
     </modules>
   </component>
 </project>
