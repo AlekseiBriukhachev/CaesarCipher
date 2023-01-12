@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StatisticAnalyzeCommand implements Command {
 
-    private final Map<Character, Integer> mapEncryptedFile = new HashMap<>();
-    private final Map<Character, Integer> mapStatisticFile = new HashMap<>();
+    private final Map<Character, Long> mapEncryptedFile = new HashMap<>();
+    private final Map<Character, Long> mapStatisticFile = new HashMap<>();
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
     @Override
@@ -30,18 +33,19 @@ public class StatisticAnalyzeCommand implements Command {
         String pathNotEncryptedFile = ConsoleHelper.readString();
 
 
-        List<Map.Entry<Character, Integer>> listEncryptedFile = mapToList(fillMapValues(mapEncryptedFile, pathEncryptedFile));
-        List<Map.Entry<Character, Integer>> listStatisticFile = mapToList(fillMapValues(mapStatisticFile, pathStatisticFile));
+        List<Map.Entry<Character, Long>> listEncryptedFile = mapToList(Objects.requireNonNull(fillMapValues(mapEncryptedFile, pathEncryptedFile)));
+        List<Map.Entry<Character, Long>> listStatisticFile = mapToList(Objects.requireNonNull(fillMapValues(mapStatisticFile, pathStatisticFile)));
 
         if (listEncryptedFile.size() <= listStatisticFile.size()) {
-            for (int i = 0; i < listEncryptedFile.size(); i++) {
-                mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey());
-            }
+            IntStream.range(0, listEncryptedFile.size())
+                    .mapToObj(i -> mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey()))
+                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                    .toString();
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
-                BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
+            try(BufferedReader reader = Files.newBufferedReader(Paths.get(Objects.requireNonNull(pathEncryptedFile)));
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(Objects.requireNonNull(pathNotEncryptedFile)))) {
                 while (reader.ready()) {
                     String line = reader.readLine();
                     for (char encryptedChar : line.toCharArray()) {
@@ -61,35 +65,26 @@ public class StatisticAnalyzeCommand implements Command {
         }
     }
 
-    private Map<Character, Integer> fillMapValues(Map<Character, Integer> map, String path) throws IOException {
+    private Map<Character, Long> fillMapValues(Map<Character, Long> map, String path) throws IOException {
 
-        StringBuilder stringBuilder = new StringBuilder();
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
-            while (reader.ready()) {
-                String string = reader.readLine();
-                stringBuilder.append(string);
-            }
-            String bigString = stringBuilder.toString();
-            for (int i = 0; i < bigString.length(); i++) {
-                char charAt = bigString.charAt(i);
-                if (!map.containsKey(charAt)) {
-                    map.put(charAt, 1);
-                } else {
-                    map.put(charAt, map.get(charAt) + 1);
-                }
-            }
-            return map;
+            try {
+                return Files.lines(Paths.get(path))
+                        .flatMapToInt(String::chars)
+                        .mapToObj(c -> (char) c)
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
         }
     }
 
-    private List<Map.Entry<Character, Integer>> mapToList(Map<Character, Integer> map) {
-        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
+    private List<Map.Entry<Character, Long>> mapToList(Map<Character, Long> map) {
+        List<Map.Entry<Character, Long>> list = new ArrayList<>(map.entrySet());
 
-        Comparator<Map.Entry<Character, Integer>> comparator = Map.Entry.comparingByValue();
+        Comparator<Map.Entry<Character, Long>> comparator = Map.Entry.comparingByValue();
 
         list.sort(comparator.reversed());
 
         return list;
     }
-
 }
