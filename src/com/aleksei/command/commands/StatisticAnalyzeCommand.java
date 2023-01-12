@@ -41,8 +41,8 @@ public class StatisticAnalyzeCommand implements Command {
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            try(BufferedReader reader = Files.newBufferedReader(Paths.get(Objects.requireNonNull(pathEncryptedFile)));
-                BufferedWriter writer = Files.newBufferedWriter(Paths.get(Objects.requireNonNull(pathNotEncryptedFile)))) {
+            try (BufferedReader reader = Files.newBufferedReader(Paths.get(Objects.requireNonNull(pathEncryptedFile)));
+                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(Objects.requireNonNull(pathNotEncryptedFile)))) {
                 while (reader.ready()) {
                     String line = reader.readLine();
                     for (char encryptedChar : line.toCharArray()) {
@@ -51,7 +51,7 @@ public class StatisticAnalyzeCommand implements Command {
                     }
                     writer.write(stringBuilder + System.lineSeparator());
                 }
-            }catch (IOException e){
+            } catch (IOException e) {
                 ConsoleHelper.writeMessage("Not correct entered data");
             }
 
@@ -64,14 +64,14 @@ public class StatisticAnalyzeCommand implements Command {
 
     private Map<Character, Long> fillMapValues(String path) {
 
-            try {
-                return Files.lines(Paths.get(path))
-                        .flatMapToInt(String::chars)
-                        .mapToObj(c -> (char) c)
-                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
+        try {
+            return Files.lines(Paths.get(path))
+                    .flatMapToInt(String::chars)
+                    .mapToObj(c -> (char) c)
+                    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
