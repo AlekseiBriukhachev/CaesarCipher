@@ -14,13 +14,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StatisticAnalyzeCommand implements Command {
-
-    private final Map<Character, Long> mapEncryptedFile = new HashMap<>();
-    private final Map<Character, Long> mapStatisticFile = new HashMap<>();
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
     @Override
-    public void execute() throws InterruptOperationException, IOException {
+    public void execute() throws InterruptOperationException {
         ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
         String pathEncryptedFile = ConsoleHelper.readString();
 
@@ -33,8 +30,8 @@ public class StatisticAnalyzeCommand implements Command {
         String pathNotEncryptedFile = ConsoleHelper.readString();
 
 
-        List<Map.Entry<Character, Long>> listEncryptedFile = mapToList(Objects.requireNonNull(fillMapValues(mapEncryptedFile, pathEncryptedFile)));
-        List<Map.Entry<Character, Long>> listStatisticFile = mapToList(Objects.requireNonNull(fillMapValues(mapStatisticFile, pathStatisticFile)));
+        List<Map.Entry<Character, Long>> listEncryptedFile = mapToList(Objects.requireNonNull(fillMapValues(pathEncryptedFile)));
+        List<Map.Entry<Character, Long>> listStatisticFile = mapToList(Objects.requireNonNull(fillMapValues(pathStatisticFile)));
 
         if (listEncryptedFile.size() <= listStatisticFile.size()) {
             IntStream.range(0, listEncryptedFile.size())
@@ -65,7 +62,7 @@ public class StatisticAnalyzeCommand implements Command {
         }
     }
 
-    private Map<Character, Long> fillMapValues(Map<Character, Long> map, String path) throws IOException {
+    private Map<Character, Long> fillMapValues(String path) {
 
             try {
                 return Files.lines(Paths.get(path))
