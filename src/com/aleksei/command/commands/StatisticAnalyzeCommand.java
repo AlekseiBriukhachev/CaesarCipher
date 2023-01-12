@@ -35,9 +35,7 @@ public class StatisticAnalyzeCommand implements Command {
 
         if (listEncryptedFile.size() <= listStatisticFile.size()) {
             IntStream.range(0, listEncryptedFile.size())
-                    .mapToObj(i -> mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey()))
-                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-                    .toString();
+                    .mapToObj(i -> mapDeEncrypted.put(listEncryptedFile.get(i).getKey(), listStatisticFile.get(i).getKey()));
 
             StringBuilder stringBuilder = new StringBuilder();
 
