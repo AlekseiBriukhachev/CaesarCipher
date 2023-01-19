@@ -1,4 +1,4 @@
-package com.aleksei.mvc;
+package com.aleksei.mvc.model;
 
 import java.util.stream.IntStream;
 

@@ -1,5 +1,7 @@
-package com.aleksei.mvc;
+package com.aleksei.mvc.model;
 
+
+import com.aleksei.mvc.View;
 
 public class ReaderWriter {
     public static String readDialogMessage(){
