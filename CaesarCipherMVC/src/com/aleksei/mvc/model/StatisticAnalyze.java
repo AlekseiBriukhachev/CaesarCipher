@@ -1,6 +1,8 @@
 package com.aleksei.mvc.model;
 
 
+import com.aleksei.mvc.ReaderWriter;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

@@ -1,7 +1,5 @@
 package com.aleksei.mvc;
 
-import com.aleksei.mvc.model.ReaderWriter;
-
 public class Controller {
     private View view = new View();
     public void exit(){

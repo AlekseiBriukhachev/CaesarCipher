@@ -1,4 +1,4 @@
-package com.aleksei.mvc.model;
+package com.aleksei.mvc;
 
 
 import com.aleksei.mvc.View;
