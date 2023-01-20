@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 public class ValidateValues {
+    private final ConsoleHelper consoleHelper = new ConsoleHelper();
     public void validatePath(String path){
         boolean isPath = false;
 
@@ -12,8 +13,8 @@ public class ValidateValues {
             if (Path.of(path).isAbsolute()){
                 isPath = true;
             }else {
-                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
-                path = ConsoleHelper.readString();
+                consoleHelper.writeMessage("Not correct entered data. Please try again");
+                path = consoleHelper.readString();
             }
         } while (!isPath);
     }
@@ -26,8 +27,8 @@ public class ValidateValues {
                 result = Integer.parseInt(value);
                 isNumber = true;
             } catch (NumberFormatException e) {
-                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
-                value = ConsoleHelper.readString();
+                consoleHelper.writeMessage("Not correct entered data. Please try again");
+                value = consoleHelper.readString();
             }
         }while (!isNumber);
 

@@ -9,15 +9,16 @@ public class Runner {
 
 
     public static void main(String[] args) {
+        final ConsoleHelper consoleHelper = new ConsoleHelper();
 
             Operation operation;
 
             do {
-                operation = ConsoleHelper.askOperation();
+                operation = consoleHelper.askOperation();
                 CommandExecutor.execute(operation);
             } while (operation != Operation.EXIT);
 
-            ConsoleHelper.printExitMessage();
+        consoleHelper.printExitMessage();
     }
 
 }

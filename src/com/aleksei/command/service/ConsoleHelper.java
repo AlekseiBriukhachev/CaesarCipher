@@ -3,57 +3,59 @@ package com.aleksei.command.service;
 import com.aleksei.command.enumeration.Operation;
 import com.aleksei.command.exception.InterruptOperationException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class ConsoleHelper {
-    private static String consoleString;
-        private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    private String consoleString;
+    private BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void writeMessage(String message) {
+    public void writeMessage(String message) {
         System.out.println(message);
     }
 
-    public static String readString() {
+    public String readString() {
         try {
             String text = bufferedReader.readLine();
             if ("exit".equalsIgnoreCase(text)) {
                 throw new InterruptOperationException();
             }
             return text;
-        } catch (InterruptOperationException e){
+        } catch (InterruptOperationException e) {
             CommandExecutor.execute(Operation.EXIT);
         } catch (IOException e) {
-            ConsoleHelper.writeMessage("Not correct entered data");
+            writeMessage("Not correct entered data");
         }
         return null;
     }
 
-    public static Operation askOperation() {
+    public Operation askOperation() {
         while (true) {
-            ConsoleHelper.writeMessage("Please choose an operation or type 'exit'");
-            ConsoleHelper.writeMessage("\t 1 - Encrypt of text to file with key");
-            ConsoleHelper.writeMessage("\t 2 - Decrypt of text to file with key");
-            ConsoleHelper.writeMessage("\t 3 - Decoding of text with using of Brute Force");
-            ConsoleHelper.writeMessage("\t 4 - Decoding of text with using of statistic analyze");
-            ConsoleHelper.writeMessage("\t 5 - Exit");
-            Integer i = Integer.parseInt(ConsoleHelper.readString().trim());
+            writeMessage("Please choose an operation or type 'exit'");
+            writeMessage("\t 1 - Encrypt of text to file with key");
+            writeMessage("\t 2 - Decrypt of text to file with key");
+            writeMessage("\t 3 - Decoding of text with using of Brute Force");
+            writeMessage("\t 4 - Decoding of text with using of statistic analyze");
+            writeMessage("\t 5 - Exit");
+            Integer i = Integer.parseInt(readString().trim());
             try {
                 return Operation.getAllowableOperationByOrdinal(i);
             } catch (IllegalArgumentException e) {
-                ConsoleHelper.writeMessage("Invalid entered data. Please try again");
+                writeMessage("Invalid entered data. Please try again");
             }
         }
     }
 
-    public static String getConsoleString() {
+    public String getConsoleString() {
         return consoleString;
     }
 
-    public static void setConsoleString(String consoleString) {
-        ConsoleHelper.consoleString = consoleString;
+    public void setConsoleString(String consoleString) {
+        this.consoleString = consoleString;
     }
 
-    public static void printExitMessage() {
-        ConsoleHelper.writeMessage("Good buy. Thank you for choosing of our service");
+    public void printExitMessage() {
+        writeMessage("Good buy. Thank you for choosing of our service");
     }
 }

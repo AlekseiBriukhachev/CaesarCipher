@@ -2,7 +2,6 @@ package com.aleksei.command.commands;
 
 import com.aleksei.command.service.CaesarCipher;
 import com.aleksei.command.service.ConsoleHelper;
-import com.aleksei.command.exception.InterruptOperationException;
 import com.aleksei.command.service.ValidateValues;
 
 import java.io.BufferedReader;
@@ -17,23 +16,24 @@ import java.util.stream.IntStream;
 
 public class BruteForceCommand implements Command {
     private final CaesarCipher caesarCipher = new CaesarCipher();
+    private final ConsoleHelper consoleHelper = new ConsoleHelper();
 
 
     @Override
     public void execute() {
         ValidateValues validateValues = new ValidateValues();
 
-        ConsoleHelper.writeMessage("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue? Y/N");
-        if (Objects.requireNonNull(ConsoleHelper.readString()).equalsIgnoreCase("y")) {
+        consoleHelper.writeMessage("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue? Y/N");
+        if (Objects.requireNonNull(consoleHelper.readString()).equalsIgnoreCase("y")) {
 
-            ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
-            String pathEncryptedFile = ConsoleHelper.readString();
+            consoleHelper.writeMessage("Please enter the path to file for decrypting:");
+            String pathEncryptedFile = consoleHelper.readString();
 
             validateValues.validatePath(pathEncryptedFile);
 
 
-            ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
-            String pathNotEncryptedFile = ConsoleHelper.readString();
+            consoleHelper.writeMessage("Please enter the path for saving decrypted file:");
+            String pathNotEncryptedFile = consoleHelper.readString();
 
             validateValues.validatePath(pathNotEncryptedFile);
 
@@ -42,7 +42,7 @@ public class BruteForceCommand implements Command {
                  BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
                 StringBuilder stringBuilder = new StringBuilder();
                 List<String> listStrings = new ArrayList<>();
-                int key = 0;
+                int key;
                 while (reader.ready()) {
                     String string = reader.readLine();
                     stringBuilder.append(string);
@@ -54,10 +54,10 @@ public class BruteForceCommand implements Command {
                     String decryptString = caesarCipher.decryptText(line, key);
                     writer.write(decryptString + System.lineSeparator());
                 }
-                ConsoleHelper.writeMessage("File is decrypted by brute forcing. Key is " + key);
+                consoleHelper.writeMessage("File is decrypted by brute forcing. Key is " + key);
             } catch (IOException e) {
-                ConsoleHelper.writeMessage("Not correct entered data");
-                ConsoleHelper.printExitMessage();
+                consoleHelper.writeMessage("Not correct entered data");
+                consoleHelper.printExitMessage();
             }
         }
     }
@@ -72,9 +72,9 @@ public class BruteForceCommand implements Command {
 
 
     private boolean isValidText(String text) {
-        ConsoleHelper.writeMessage(text + "\n" + "Can you read the text? Y/N");
+        consoleHelper.writeMessage(text + "\n" + "Can you read the text? Y/N");
 
-        String answer =  ConsoleHelper.readString();
+        String answer =  consoleHelper.readString();
 
         return Objects.requireNonNull(answer).equalsIgnoreCase("Y");
     }

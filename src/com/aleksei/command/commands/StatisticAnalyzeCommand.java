@@ -14,26 +14,27 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StatisticAnalyzeCommand implements Command {
+    private final ConsoleHelper consoleHelper = new ConsoleHelper();
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
     @Override
     public void execute() {
         ValidateValues validateValues = new ValidateValues();
 
-        ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
-        String pathEncryptedFile = ConsoleHelper.readString();
+        consoleHelper.writeMessage("Please enter the path to file for decrypting:");
+        String pathEncryptedFile = consoleHelper.readString();
 
         validateValues.validatePath(pathEncryptedFile);
 
 
-        ConsoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
-        String pathStatisticFile = ConsoleHelper.readString();
+        consoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
+        String pathStatisticFile = consoleHelper.readString();
 
         validateValues.validatePath(pathStatisticFile);
 
 
-        ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
-        String pathNotEncryptedFile = ConsoleHelper.readString();
+        consoleHelper.writeMessage("Please enter the path for saving decrypted file:");
+        String pathNotEncryptedFile = consoleHelper.readString();
 
         validateValues.validatePath(pathNotEncryptedFile);
 
@@ -59,13 +60,13 @@ public class StatisticAnalyzeCommand implements Command {
                     writer.write(stringBuilder + System.lineSeparator());
                 }
             } catch (IOException e) {
-                ConsoleHelper.writeMessage("Not correct entered data");
+                consoleHelper.writeMessage("Not correct entered data");
             }
 
 
-            ConsoleHelper.writeMessage("File is decrypted by statistic analyze");
+            consoleHelper.writeMessage("File is decrypted by statistic analyze");
         } else {
-            ConsoleHelper.writeMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
+            consoleHelper.writeMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
         }
     }
 
