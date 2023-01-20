@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 public class BruteForceCommand implements Command {
     private final CaesarCipher caesarCipher = new CaesarCipher();
 
+
     @Override
     public void execute() throws InterruptOperationException {
         ConsoleHelper.writeMessage("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue? Y/N");
@@ -57,7 +58,7 @@ public class BruteForceCommand implements Command {
     public int getDecryptingKey(String message) {
         return Math.toIntExact(IntStream.range(0, caesarCipher.getAlphabet().length())
                 .mapToObj(key -> caesarCipher.decryptText(message, key))
-                .filter(this::isValidText)
+                .takeWhile(s -> !isValidText(s))
                 .count());
     }
 

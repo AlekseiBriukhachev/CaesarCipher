@@ -59,7 +59,7 @@ public class BruteForce {
     public int getDecryptingKey(String message) {
         return Math.toIntExact(IntStream.range(0, caesarCipher.getAlphabet().length())
                 .mapToObj(key -> caesarCipher.decryptText(message, key))
-                .filter(this::isValidText)
+                .takeWhile(s -> !isValidText(s))
                 .count());
     }
 
