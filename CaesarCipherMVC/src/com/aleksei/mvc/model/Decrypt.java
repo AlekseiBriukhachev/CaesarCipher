@@ -12,22 +12,23 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 public class Decrypt {
+    private final ReaderWriter readerWriter = new ReaderWriter();
 
 
     public void decrypt() {
         CaesarCipher caesarCipher = new CaesarCipher();
         Controller controller = new Controller();
 
-        ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
-        String  pathEncryptedFile = ReaderWriter.readDialogMessage();
+        readerWriter.setDialogText("Please enter the path to file for decrypting:");
+        String  pathEncryptedFile = readerWriter.readDialogMessage();
 
 
-        ReaderWriter.setDialogText("Enter the key:");
-        int key = Integer.parseInt(Objects.requireNonNull(ReaderWriter.readDialogMessage()));
+        readerWriter.setDialogText("Enter the key:");
+        int key = Integer.parseInt(Objects.requireNonNull(readerWriter.readDialogMessage()));
         if (key == 0) controller.exit();
 
-        ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
-        String pathOfFile = ReaderWriter.readDialogMessage();
+        readerWriter.setDialogText("Please enter the path for saving decrypted file:");
+        String pathOfFile = readerWriter.readDialogMessage();
 
 
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
@@ -37,9 +38,9 @@ public class Decrypt {
                 String decryptedString = caesarCipher.decryptText(line, key);
                 writer.write(decryptedString + System.lineSeparator());
             }
-            ReaderWriter.setDoneMessage("Decrypting is done!");
+            readerWriter.setDoneMessage("Decrypting is done!");
         } catch (IOException e) {
-            ReaderWriter.setConfirmText("Not correct entered data");
+            readerWriter.setConfirmText("Not correct entered data");
         }
 
     }

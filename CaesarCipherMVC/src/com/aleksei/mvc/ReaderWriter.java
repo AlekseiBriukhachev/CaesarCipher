@@ -4,20 +4,20 @@ package com.aleksei.mvc;
 import com.aleksei.mvc.View;
 
 public class ReaderWriter {
-    public static String readDialogMessage(){
+    public String readDialogMessage(){
         return View.getDialogMessage();
     }
-    public static void setDialogText(String text){
+    public void setDialogText(String text){
         View.setDialogMessage(text);
     }
-    public static int readConfirmationMessage(){return View.getConfirmationMessage();}
-    public static void setConfirmText(String text){
+    public int readConfirmationMessage(){return View.getConfirmationMessage();}
+    public void setConfirmText(String text){
         View.setConfirmationMessage(text);
     }
-    public static void printMessage(String message){
+    public void printMessage(String message){
         View.console.setText(message + "\n");
     }
-    public static void setDoneMessage(String text){
+    public void setDoneMessage(String text){
         View.setDoneConfirmation(text);
         View.getDoneConfirmation();
     }

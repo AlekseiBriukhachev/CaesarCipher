@@ -33,7 +33,7 @@ public class View extends JFrame implements ActionListener {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

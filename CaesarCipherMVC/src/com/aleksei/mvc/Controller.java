@@ -1,19 +1,21 @@
 package com.aleksei.mvc;
 
 public class Controller {
-    private View view = new View();
+    private final View view = new View();
     public void exit(){
         view.exit();
     }
 
     public static void main(String[] args) {
+        final ReaderWriter readerWriter = new ReaderWriter();
         View view = new View();
         view.init();
 
-        ReaderWriter.printMessage("Please choose an operation:\n" +
-                "\t Encrypt - Encrypt of text to file with key\n" +
-                "\t Decrypt - Decrypt of text to file with key\n" +
-                "\t Brute Force - Decoding of text with using of Brute Force\n" +
-                "\t Statistic analyze - Decoding of text with using of statistic analyze");
+        readerWriter.printMessage("""
+                \t Please choose an operation:
+                \t Encrypt - Encrypt of text to file with key
+                \t Decrypt - Decrypt of text to file with key
+                \t Brute Force - Decoding of text with using of Brute Force
+                \t Statistic analyze - Decoding of text with using of statistic analyze""");
     }
 }

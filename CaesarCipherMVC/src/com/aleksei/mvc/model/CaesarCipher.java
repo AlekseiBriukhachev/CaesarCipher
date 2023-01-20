@@ -19,7 +19,7 @@ public class CaesarCipher {
                 .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
                 .toString();
     }
-    private static char encryptChar(char c, int key) {
+    private char encryptChar(char c, int key) {
         int letterPosition = ALPHABET.indexOf(c);
         char encryptChar;
         if (letterPosition >= 0) {
@@ -31,7 +31,7 @@ public class CaesarCipher {
         return encryptChar;
     }
 
-    private static char decryptChar(char c, int key) {
+    private char decryptChar(char c, int key) {
         int letterPosition = ALPHABET.indexOf(c);
         char decryptChar;
         if (letterPosition >= 0) {

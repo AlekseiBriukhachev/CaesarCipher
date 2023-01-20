@@ -15,18 +15,19 @@ import java.util.stream.IntStream;
 
 public class StatisticAnalyze {
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
+    private final ReaderWriter readerWriter = new ReaderWriter();
 
     public void analyze() throws IOException {
 
-        ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
-        String pathEncryptedFile = ReaderWriter.readDialogMessage();
+        readerWriter.setDialogText("Please enter the path to file for decrypting:");
+        String pathEncryptedFile = readerWriter.readDialogMessage();
 
-        ReaderWriter.setDialogText("Please enter the path to open file the same author and the same style:");
-        String pathStatisticFile = ReaderWriter.readDialogMessage();
+        readerWriter.setDialogText("Please enter the path to open file the same author and the same style:");
+        String pathStatisticFile = readerWriter.readDialogMessage();
 
 
-        ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
-        String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
+        readerWriter.setDialogText("Please enter the path for saving decrypted file:");
+        String pathNotEncryptedFile = readerWriter.readDialogMessage();
 
 
         List<Map.Entry<Character, Long>> listEncryptedFile = mapToList(Objects.requireNonNull(fillMapValues(pathEncryptedFile)));
@@ -49,12 +50,12 @@ public class StatisticAnalyze {
                     writer.write(stringBuilder + System.lineSeparator());
                 }
             }catch (IOException e){
-                ReaderWriter.setDoneMessage("Not correct entered data");
+                readerWriter.setDoneMessage("Not correct entered data");
             }
 
-            ReaderWriter.setDoneMessage("File is decrypted by statistic analyze");
+            readerWriter.setDoneMessage("File is decrypted by statistic analyze");
         } else {
-            ReaderWriter.setDoneMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
+            readerWriter.setDoneMessage("The capacity of open file is lower than capacity of encrypted file - must be more.");
         }
     }
 

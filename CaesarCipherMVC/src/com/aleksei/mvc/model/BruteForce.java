@@ -15,26 +15,27 @@ import java.util.stream.IntStream;
 
 public class BruteForce {
     private final CaesarCipher caesarCipher = new CaesarCipher();
+    private final ReaderWriter readerWriter = new ReaderWriter();
 
     public void bruteForce() {
         Controller controller = new Controller();
 
-        ReaderWriter.setConfirmText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue?");
-        switch (ReaderWriter.readConfirmationMessage()) {
+        readerWriter.setConfirmText("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue?");
+        switch (readerWriter.readConfirmationMessage()) {
             case 0 -> {
-                ReaderWriter.setDialogText("Please enter the path to file for decrypting:");
-                String pathEncryptedFile = ReaderWriter.readDialogMessage();
+                readerWriter.setDialogText("Please enter the path to file for decrypting:");
+                String pathEncryptedFile = readerWriter.readDialogMessage();
 
 
-                ReaderWriter.setDialogText("Please enter the path for saving decrypted file:");
-                String pathNotEncryptedFile = ReaderWriter.readDialogMessage();
+                readerWriter.setDialogText("Please enter the path for saving decrypted file:");
+                String pathNotEncryptedFile = readerWriter.readDialogMessage();
 
 
                 try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
                      BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathNotEncryptedFile))) {
                     StringBuilder stringBuilder = new StringBuilder();
                     List<String> listStrings = new ArrayList<>();
-                    int key = 0;
+                    int key;
                     while (reader.ready()) {
                         String string = reader.readLine();
                         stringBuilder.append(string);
@@ -46,9 +47,9 @@ public class BruteForce {
                         String decryptString = caesarCipher.decryptText(line, key);
                         writer.write(decryptString + System.lineSeparator());
                     }
-                    ReaderWriter.setDoneMessage("File is decrypted by brute forcing. Key is " + key);
+                    readerWriter.setDoneMessage("File is decrypted by brute forcing. Key is " + key);
                 }catch (IOException e) {
-                    ReaderWriter.setDoneMessage("Not correct entered data");
+                    readerWriter.setDoneMessage("Not correct entered data");
                 }
             }
             case 2 -> controller.exit();
@@ -66,10 +67,10 @@ public class BruteForce {
 
     private boolean isValidText(String text) {
         Controller controller = new Controller();
-        ReaderWriter.printMessage(text);
-        ReaderWriter.setConfirmText("Can you read the text?");
+        readerWriter.printMessage(text);
+        readerWriter.setConfirmText("Can you read the text?");
 
-        int answer = ReaderWriter.readConfirmationMessage();
+        int answer = readerWriter.readConfirmationMessage();
 
         switch (answer) {
             case 0 -> {
