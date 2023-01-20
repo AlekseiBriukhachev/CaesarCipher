@@ -1,5 +1,6 @@
-package com.aleksei.command;
+package com.aleksei.command.service;
 
+import com.aleksei.command.enumeration.Operation;
 import com.aleksei.command.exception.InterruptOperationException;
 
 import java.io.*;
@@ -12,20 +13,22 @@ public class ConsoleHelper {
         System.out.println(message);
     }
 
-    public static String readString() throws InterruptOperationException {
+    public static String readString() {
         try {
-                String text = bufferedReader.readLine();
-                if ("exit".equalsIgnoreCase(text)) {
-                    throw new InterruptOperationException();
-                }
-                return text;
+            String text = bufferedReader.readLine();
+            if ("exit".equalsIgnoreCase(text)) {
+                throw new InterruptOperationException();
+            }
+            return text;
+        } catch (InterruptOperationException e){
+            CommandExecutor.execute(Operation.EXIT);
         } catch (IOException e) {
-            e.printStackTrace();
+            ConsoleHelper.writeMessage("Not correct entered data");
         }
         return null;
     }
 
-    public static Operation askOperation() throws InterruptOperationException {
+    public static Operation askOperation() {
         while (true) {
             ConsoleHelper.writeMessage("Please choose an operation or type 'exit'");
             ConsoleHelper.writeMessage("\t 1 - Encrypt of text to file with key");

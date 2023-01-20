@@ -1,4 +1,4 @@
-package com.aleksei.command;
+package com.aleksei.command.service;
 
 import java.util.stream.IntStream;
 

@@ -4,7 +4,7 @@ import com.aleksei.command.exception.InterruptOperationException;
 
 public class ExitCommand implements Command {
     @Override
-    public void execute() throws InterruptOperationException {
+    public void execute() {
 
     }
 }

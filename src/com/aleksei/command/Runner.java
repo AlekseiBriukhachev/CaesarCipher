@@ -1,22 +1,23 @@
 package com.aleksei.command;
 
 
-public class Controller {
+import com.aleksei.command.enumeration.Operation;
+import com.aleksei.command.service.CommandExecutor;
+import com.aleksei.command.service.ConsoleHelper;
+
+public class Runner {
 
 
     public static void main(String[] args) {
 
-        try {
             Operation operation;
+
             do {
                 operation = ConsoleHelper.askOperation();
                 CommandExecutor.execute(operation);
             } while (operation != Operation.EXIT);
+
             ConsoleHelper.printExitMessage();
-        } catch (Exception ignored) {
-            ConsoleHelper.printExitMessage();
-            ignored.printStackTrace();
-        }
     }
 
 }

@@ -1,8 +1,9 @@
 package com.aleksei.command.commands;
 
-import com.aleksei.command.CaesarCipher;
-import com.aleksei.command.ConsoleHelper;
+import com.aleksei.command.service.CaesarCipher;
+import com.aleksei.command.service.ConsoleHelper;
 import com.aleksei.command.exception.InterruptOperationException;
+import com.aleksei.command.service.ValidateValues;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,16 +20,22 @@ public class BruteForceCommand implements Command {
 
 
     @Override
-    public void execute() throws InterruptOperationException {
+    public void execute() {
+        ValidateValues validateValues = new ValidateValues();
+
         ConsoleHelper.writeMessage("WARNING! Brut forcing is NOT LEGAL!\nDo you want to continue? Y/N");
-        if (ConsoleHelper.readString().equalsIgnoreCase("y")) {
+        if (Objects.requireNonNull(ConsoleHelper.readString()).equalsIgnoreCase("y")) {
 
             ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
             String pathEncryptedFile = ConsoleHelper.readString();
 
+            validateValues.validatePath(pathEncryptedFile);
+
 
             ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
             String pathNotEncryptedFile = ConsoleHelper.readString();
+
+            validateValues.validatePath(pathNotEncryptedFile);
 
 
             try (BufferedReader reader = Files.newBufferedReader(Paths.get(pathEncryptedFile));
@@ -50,6 +57,7 @@ public class BruteForceCommand implements Command {
                 ConsoleHelper.writeMessage("File is decrypted by brute forcing. Key is " + key);
             } catch (IOException e) {
                 ConsoleHelper.writeMessage("Not correct entered data");
+                ConsoleHelper.printExitMessage();
             }
         }
     }
@@ -66,12 +74,7 @@ public class BruteForceCommand implements Command {
     private boolean isValidText(String text) {
         ConsoleHelper.writeMessage(text + "\n" + "Can you read the text? Y/N");
 
-        String answer = null;
-        try {
-            answer = ConsoleHelper.readString();
-        } catch (InterruptOperationException e) {
-            e.printStackTrace();
-        }
+        String answer =  ConsoleHelper.readString();
 
         return Objects.requireNonNull(answer).equalsIgnoreCase("Y");
     }

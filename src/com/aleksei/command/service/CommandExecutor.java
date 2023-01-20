@@ -1,6 +1,7 @@
-package com.aleksei.command;
+package com.aleksei.command.service;
 
 import com.aleksei.command.commands.*;
+import com.aleksei.command.enumeration.Operation;
 import com.aleksei.command.exception.InterruptOperationException;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class CommandExecutor {
         commandMap.put(Operation.EXIT, new ExitCommand());
     }
 
-    public static final void execute(Operation operation) throws InterruptOperationException, IOException {
+    public static final void execute(Operation operation)  {
         commandMap.get(operation).execute();
     }
 }

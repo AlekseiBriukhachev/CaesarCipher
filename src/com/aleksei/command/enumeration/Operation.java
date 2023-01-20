@@ -1,4 +1,4 @@
-package com.aleksei.command;
+package com.aleksei.command.enumeration;
 
 public enum Operation {
     ENCRYPT,

@@ -1,7 +1,7 @@
 package com.aleksei.command.commands;
 
-import com.aleksei.command.ConsoleHelper;
-import com.aleksei.command.exception.InterruptOperationException;
+import com.aleksei.command.service.ConsoleHelper;
+import com.aleksei.command.service.ValidateValues;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,17 +17,25 @@ public class StatisticAnalyzeCommand implements Command {
     private final Map<Character, Character> mapDeEncrypted = new HashMap<>();
 
     @Override
-    public void execute() throws InterruptOperationException {
+    public void execute() {
+        ValidateValues validateValues = new ValidateValues();
+
         ConsoleHelper.writeMessage("Please enter the path to file for decrypting:");
         String pathEncryptedFile = ConsoleHelper.readString();
+
+        validateValues.validatePath(pathEncryptedFile);
 
 
         ConsoleHelper.writeMessage("Please enter the path to open file the same author and the same style:");
         String pathStatisticFile = ConsoleHelper.readString();
 
+        validateValues.validatePath(pathStatisticFile);
+
 
         ConsoleHelper.writeMessage("Please enter the path for saving decrypted file:");
         String pathNotEncryptedFile = ConsoleHelper.readString();
+
+        validateValues.validatePath(pathNotEncryptedFile);
 
 
         List<Map.Entry<Character, Long>> listEncryptedFile = mapToList(Objects.requireNonNull(fillMapValues(pathEncryptedFile)));
@@ -41,6 +49,7 @@ public class StatisticAnalyzeCommand implements Command {
 
             try (BufferedReader reader = Files.newBufferedReader(Paths.get(Objects.requireNonNull(pathEncryptedFile)));
                  BufferedWriter writer = Files.newBufferedWriter(Paths.get(Objects.requireNonNull(pathNotEncryptedFile)))) {
+
                 while (reader.ready()) {
                     String line = reader.readLine();
                     for (char encryptedChar : line.toCharArray()) {

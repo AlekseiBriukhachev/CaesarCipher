@@ -1,8 +1,9 @@
 package com.aleksei.command.commands;
 
-import com.aleksei.command.CaesarCipher;
-import com.aleksei.command.ConsoleHelper;
+import com.aleksei.command.service.CaesarCipher;
+import com.aleksei.command.service.ConsoleHelper;
 import com.aleksei.command.exception.InterruptOperationException;
+import com.aleksei.command.service.ValidateValues;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,34 +15,22 @@ import java.util.Objects;
 
 public class EncryptCommand implements Command {
     @Override
-    public void execute() throws InterruptOperationException {
+    public void execute() {
         CaesarCipher caesarCipher = new CaesarCipher();
-        boolean isPath = false;
+        ValidateValues validateValues = new ValidateValues();
 
         ConsoleHelper.writeMessage("Please enter the path to file for encrypting:");
         String pathOfFile = ConsoleHelper.readString();
-        do {
-            if (Path.of(pathOfFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
-            }
-        } while (!isPath);
-        isPath = false;
+
+        validateValues.validatePath(pathOfFile);
 
         ConsoleHelper.writeMessage("Please enter the key:");
-        int key = Integer.parseInt(Objects.requireNonNull(ConsoleHelper.readString()));
+        int key = validateValues.validateKey(ConsoleHelper.readString());
 
         ConsoleHelper.writeMessage("Please enter the path for saving of encrypted file:");
         String pathOfEncryptedFile = ConsoleHelper.readString();
-        do {
-            if (Path.of(pathOfEncryptedFile).isAbsolute()){
-                isPath = true;
-            }else {
-                ConsoleHelper.writeMessage("Not correct entered data. Please try again");
-                pathOfEncryptedFile = ConsoleHelper.readString();
-            }
-        } while (!isPath);
+
+        validateValues.validatePath(pathOfEncryptedFile);
 
         try(BufferedReader reader = Files.newBufferedReader(Paths.get(pathOfFile));
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(pathOfEncryptedFile))){
@@ -54,7 +43,7 @@ public class EncryptCommand implements Command {
         } catch (IOException e) {
             ConsoleHelper.writeMessage("Not correct entered data");
         }
-
-
     }
+
+
 }
